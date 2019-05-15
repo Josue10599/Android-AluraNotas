@@ -12,14 +12,33 @@ import com.fulltime.ceep.R;
 import com.fulltime.ceep.model.Nota;
 
 import static com.fulltime.ceep.ui.activity.Constantes.CHAVE_NOTA;
+import static com.fulltime.ceep.ui.activity.Constantes.CHAVE_POSICAO;
 import static com.fulltime.ceep.ui.activity.Constantes.CODIGO_RESULTADO_NOTA_CRIADA;
+import static com.fulltime.ceep.ui.activity.Constantes.VALOR_PADRAO;
 
 public class FormularioNotaActivity extends AppCompatActivity {
+
+    private int posicao;
+    private EditText editTextDescricao;
+    private EditText editTextTitulo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_nota);
+        comunicaComponentes();
+
+        Intent recebeDados = getIntent();
+        if (recebeDados.hasExtra(CHAVE_NOTA) && recebeDados.hasExtra(CHAVE_POSICAO)) {
+            Nota nota = (Nota) recebeDados.getSerializableExtra(CHAVE_NOTA);
+            posicao = recebeDados.getIntExtra(CHAVE_POSICAO, VALOR_PADRAO);
+            preencheCampos(nota);
+        }
+    }
+
+    private void preencheCampos(Nota nota) {
+        editTextTitulo.setText(nota.getTitulo());
+        editTextDescricao.setText(nota.getDescricao());
     }
 
     @Override
@@ -31,7 +50,7 @@ public class FormularioNotaActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (ehMenuConcluir(item)) {
-            adicionaNota();
+            devolveDados();
             finish();
         }
         return true;
@@ -41,27 +60,28 @@ public class FormularioNotaActivity extends AppCompatActivity {
         return item.getItemId() == R.id.formulario_nota_menu_concluir;
     }
 
-    private void adicionaNota() {
+    private void devolveDados() {
         Nota nota = pegaNota();
-        Intent devolveNota = new Intent();
-        devolveNota.putExtra(CHAVE_NOTA, nota);
-        setResult(CODIGO_RESULTADO_NOTA_CRIADA, devolveNota);
+        Intent mandaDados = new Intent();
+        mandaDados.putExtra(CHAVE_NOTA, nota);
+        mandaDados.putExtra(CHAVE_POSICAO, posicao);
+        setResult(CODIGO_RESULTADO_NOTA_CRIADA, mandaDados);
     }
 
     private Nota pegaNota() {
-        Nota nota = new Nota(getTitulo(), getDescricao());
-        return nota;
+        return new Nota(getTitulo(), getDescricao());
     }
 
     private String getDescricao() {
-        EditText editTextDescricao = findViewById(R.id.formulario_nota_descricao);
-        String descricao = editTextDescricao.getText().toString();
-        return descricao;
+        return editTextDescricao.getText().toString();
+    }
+
+    private void comunicaComponentes() {
+        editTextDescricao = findViewById(R.id.formulario_nota_descricao);
+        editTextTitulo = findViewById(R.id.formulario_nota_titulo);
     }
 
     private String getTitulo() {
-        EditText editTextTitulo = findViewById(R.id.formulario_nota_titulo);
-        String titulo = editTextTitulo.getText().toString();
-        return titulo;
+        return editTextTitulo.getText().toString();
     }
 }
