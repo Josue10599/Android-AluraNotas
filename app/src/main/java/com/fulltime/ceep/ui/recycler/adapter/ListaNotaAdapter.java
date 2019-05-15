@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fulltime.ceep.R;
 import com.fulltime.ceep.model.Nota;
+import com.fulltime.ceep.ui.recycler.adapter.listener.OnItemClickListener;
 
 import java.util.List;
 
@@ -23,18 +24,22 @@ public class ListaNotaAdapter extends RecyclerView.Adapter<ListaNotaAdapter.Nota
 
     private List<Nota> notas;
     private Context context;
+    private OnItemClickListener onItemClickListener;
 
     public ListaNotaAdapter(Context context, List<Nota> notas) {
         this.context = context;
         this.notas = notas;
     }
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     @NonNull
     @Override
     public ListaNotaAdapter.NotaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_nota, parent,false);
-        NotaViewHolder viewHolder = new NotaViewHolder(view);
-        return viewHolder;
+        return new NotaViewHolder(view);
     }
 
     @Override
@@ -58,13 +63,19 @@ public class ListaNotaAdapter extends RecyclerView.Adapter<ListaNotaAdapter.Nota
         private final TextView textViewTitulo;
         private final TextView textViewDescricao;
 
-        public NotaViewHolder(@NonNull View itemView) {
+        NotaViewHolder(@NonNull final View itemView) {
             super(itemView);
             textViewTitulo = itemView.findViewById(R.id.item_nota_titulo);
             textViewDescricao = itemView.findViewById(R.id.item_nota_descricao);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick();
+                }
+            });
         }
 
-        public void bindNota(Nota nota) {
+        private void bindNota(Nota nota) {
             textViewTitulo.setText(nota.getTitulo());
             textViewDescricao.setText(nota.getDescricao());
         }

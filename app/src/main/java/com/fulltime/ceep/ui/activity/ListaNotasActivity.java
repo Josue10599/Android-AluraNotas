@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,8 +14,10 @@ import com.fulltime.ceep.R;
 import com.fulltime.ceep.dao.NotaDAO;
 import com.fulltime.ceep.model.Nota;
 import com.fulltime.ceep.ui.recycler.adapter.ListaNotaAdapter;
+import com.fulltime.ceep.ui.recycler.adapter.listener.OnItemClickListener;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.fulltime.ceep.ui.activity.Constantes.CHAVE_NOTA;
 import static com.fulltime.ceep.ui.activity.Constantes.CODIGO_REQUISICAO_INSERE_NOTA;
@@ -28,12 +31,17 @@ public class ListaNotasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_notas);
-        configuraRecyclerView(pegaTodasNotas());
+        configuraAdapter(pegaTodasNotas());
+        configuraRecyclerView();
         configuraInsereNotas();
     }
 
     private List<Nota> pegaTodasNotas() {
-        return new NotaDAO().todos();
+        NotaDAO notaDAO = new NotaDAO();
+        for (int i = 0; i < 10; i++) {
+            notaDAO.insere(new Nota("Título " + (i + 1), "Descrição " + (i + 1)));
+        }
+        return notaDAO.todos();
     }
 
     private void configuraInsereNotas() {
@@ -55,7 +63,9 @@ public class ListaNotasActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (ehResultadoComNota(requestCode, resultCode, data)) {
-            salvaNota(data);
+            if (data != null) {
+                salvaNota(data);
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -65,7 +75,7 @@ public class ListaNotasActivity extends AppCompatActivity {
     }
 
     private boolean ehNota(@Nullable Intent data) {
-        return data.hasExtra(CHAVE_NOTA);
+        return Objects.requireNonNull(data).hasExtra(CHAVE_NOTA);
     }
 
     private boolean ehResultadoNotaCriada(int resultCode) {
@@ -82,13 +92,18 @@ public class ListaNotasActivity extends AppCompatActivity {
         listaNotaAdapter.adicionaNota(nota);
     }
 
-    private void configuraRecyclerView(List<Nota> notas) {
+    private void configuraRecyclerView() {
         RecyclerView listView = findViewById(R.id.lista_notas_item);
-        configuraAdapter(notas, listView);
+        listView.setAdapter(listaNotaAdapter);
     }
 
-    private void configuraAdapter(List<Nota> notas, RecyclerView listView) {
+    private void configuraAdapter(List<Nota> notas) {
         listaNotaAdapter = new ListaNotaAdapter(getApplicationContext(), notas);
-        listView.setAdapter(listaNotaAdapter);
+        listaNotaAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick() {
+                Toast.makeText(ListaNotasActivity.this, "Teste", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
