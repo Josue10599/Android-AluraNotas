@@ -101,8 +101,8 @@ public class ListaNotasActivity extends AppCompatActivity {
         listaNotaAdapter = new ListaNotaAdapter(getApplicationContext(), notas);
         listaNotaAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick() {
-                Toast.makeText(ListaNotasActivity.this, "Teste", Toast.LENGTH_LONG).show();
+            public void onItemClick(Nota nota) {
+                Toast.makeText(ListaNotasActivity.this,nota.getTitulo(),Toast.LENGTH_LONG).show();
             }
         });
     }
