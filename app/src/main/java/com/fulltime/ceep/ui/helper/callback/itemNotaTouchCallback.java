@@ -1,16 +1,18 @@
 package com.fulltime.ceep.ui.helper.callback;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class itemNotaTouchCallback extends ItemTouchHelper.Callback {
-    private final Context context;
+import com.fulltime.ceep.dao.NotaDAO;
+import com.fulltime.ceep.ui.recycler.adapter.ListaNotaAdapter;
 
-    public itemNotaTouchCallback(Context context) {
-        this.context = context;
+public class itemNotaTouchCallback extends ItemTouchHelper.Callback {
+
+    private final ListaNotaAdapter adapter;
+
+    public itemNotaTouchCallback(ListaNotaAdapter adapter) {
+        this.adapter = adapter;
     }
 
     @Override
@@ -25,7 +27,9 @@ public class itemNotaTouchCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
+    public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
+        int position = viewHolder.getAdapterPosition();
+        new NotaDAO().remove(position);
+        adapter.remove(position);
     }
 }

@@ -5,4 +5,8 @@
     <string name="descricao">Descrição</string>
     <string name="concluir">Concluir</string>
     <string name="erro_altera_nota">Ocorreu um erro ao alterar a nota!</string>
+    <string name="removendo">Removendo nota&#8230;</string>
+    <string name="remover_nota">Deseja realmente remover está nota?</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
 </resources>

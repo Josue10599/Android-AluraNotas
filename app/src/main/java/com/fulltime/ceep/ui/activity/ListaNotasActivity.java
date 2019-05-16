@@ -143,7 +143,7 @@ public class ListaNotasActivity extends AppCompatActivity {
     private void configuraRecyclerView() {
         RecyclerView recyclerViewListaNotas = findViewById(R.id.lista_notas_item);
         recyclerViewListaNotas.setAdapter(listaNotaAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new itemNotaTouchCallback(this));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new itemNotaTouchCallback(listaNotaAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerViewListaNotas);
     }
 

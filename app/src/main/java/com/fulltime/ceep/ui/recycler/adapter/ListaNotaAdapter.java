@@ -63,6 +63,11 @@ public class ListaNotaAdapter extends RecyclerView.Adapter<ListaNotaAdapter.Nota
         notifyDataSetChanged();
     }
 
+    public void remove(int position) {
+        notas.remove(position);
+        notifyDataSetChanged();
+    }
+
     // Classe abstrata
     class NotaViewHolder extends RecyclerView.ViewHolder{
         private final TextView textViewTitulo;
