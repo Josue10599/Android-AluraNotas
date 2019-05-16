@@ -1,5 +1,6 @@
 package com.fulltime.ceep.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,12 +14,11 @@ import com.fulltime.ceep.model.Nota;
 
 import static com.fulltime.ceep.ui.activity.Constantes.CHAVE_NOTA;
 import static com.fulltime.ceep.ui.activity.Constantes.CHAVE_POSICAO;
-import static com.fulltime.ceep.ui.activity.Constantes.CODIGO_RESULTADO_NOTA_CRIADA;
-import static com.fulltime.ceep.ui.activity.Constantes.VALOR_PADRAO;
+import static com.fulltime.ceep.ui.activity.Constantes.POSICAO_INVALIDA;
 
 public class FormularioNotaActivity extends AppCompatActivity {
 
-    private int posicao;
+    private int posicao = POSICAO_INVALIDA;
     private EditText editTextDescricao;
     private EditText editTextTitulo;
 
@@ -27,11 +27,14 @@ public class FormularioNotaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_nota);
         comunicaComponentes();
+        recebeDados();
+    }
 
+    private void recebeDados() {
         Intent recebeDados = getIntent();
-        if (recebeDados.hasExtra(CHAVE_NOTA) && recebeDados.hasExtra(CHAVE_POSICAO)) {
+        if (recebeDados.hasExtra(CHAVE_NOTA)) {
             Nota nota = (Nota) recebeDados.getSerializableExtra(CHAVE_NOTA);
-            posicao = recebeDados.getIntExtra(CHAVE_POSICAO, VALOR_PADRAO);
+            posicao = recebeDados.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
             preencheCampos(nota);
         }
     }
@@ -65,7 +68,7 @@ public class FormularioNotaActivity extends AppCompatActivity {
         Intent mandaDados = new Intent();
         mandaDados.putExtra(CHAVE_NOTA, nota);
         mandaDados.putExtra(CHAVE_POSICAO, posicao);
-        setResult(CODIGO_RESULTADO_NOTA_CRIADA, mandaDados);
+        setResult(Activity.RESULT_OK, mandaDados);
     }
 
     private Nota pegaNota() {

@@ -4,4 +4,5 @@
     <string name="titulo">Título</string>
     <string name="descricao">Descrição</string>
     <string name="concluir">Concluir</string>
+    <string name="erro_altera_nota">Ocorreu um erro ao alterar a nota!</string>
 </resources>
