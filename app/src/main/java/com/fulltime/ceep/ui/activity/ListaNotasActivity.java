@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fulltime.ceep.R;
 import com.fulltime.ceep.dao.NotaDAO;
 import com.fulltime.ceep.model.Nota;
-import com.fulltime.ceep.ui.helper.callback.itemNotaTouchCallback;
+import com.fulltime.ceep.ui.helper.callback.ItemNotaTouchCallback;
 import com.fulltime.ceep.ui.recycler.adapter.ListaNotaAdapter;
 import com.fulltime.ceep.ui.recycler.adapter.listener.OnItemClickListener;
 
@@ -143,12 +143,16 @@ public class ListaNotasActivity extends AppCompatActivity {
     private void configuraRecyclerView() {
         RecyclerView recyclerViewListaNotas = findViewById(R.id.lista_notas_item);
         recyclerViewListaNotas.setAdapter(listaNotaAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new itemNotaTouchCallback(listaNotaAdapter));
-        itemTouchHelper.attachToRecyclerView(recyclerViewListaNotas);
+        configuraItemTouchHelper(recyclerViewListaNotas);
     }
 
-    private void configuraAdapter(List<Nota> notas) {
-        listaNotaAdapter = new ListaNotaAdapter(getApplicationContext(), notas);
+    private void configuraItemTouchHelper(RecyclerView recyclerView) {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemNotaTouchCallback(listaNotaAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void configuraAdapter(List<Nota> lista) {
+        listaNotaAdapter = new ListaNotaAdapter(getApplicationContext(), lista);
         listaNotaAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(Nota nota, int posicao) {
