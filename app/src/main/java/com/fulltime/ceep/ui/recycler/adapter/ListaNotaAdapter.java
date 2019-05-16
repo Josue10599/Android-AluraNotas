@@ -56,22 +56,22 @@ public class ListaNotaAdapter extends RecyclerView.Adapter<ListaNotaAdapter.Nota
 
     public void adicionaNota(Nota nota) {
         notas.add(nota);
-        notifyDataSetChanged();
+        notifyItemInserted(notas.size() - 1);
     }
 
     public void altera(int posicao, Nota nota) {
         notas.set(posicao, nota);
-        notifyDataSetChanged();
+        notifyItemChanged(posicao, nota);
     }
 
     public void remove(int position) {
         notas.remove(position);
-        notifyDataSetChanged();
+        notifyItemRemoved(position);
     }
 
     public void troca(int posicaoInicial, int posicaoFinal) {
         Collections.swap(notas, posicaoInicial, posicaoFinal);
-        notifyDataSetChanged();
+        notifyItemMoved(posicaoInicial, posicaoFinal);
     }
 
     // Classe abstrata

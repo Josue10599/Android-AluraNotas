@@ -9,4 +9,7 @@
     <string name="remover_nota">Deseja realmente remover está nota?</string>
     <string name="sim">Sim</string>
     <string name="nao">Não</string>
+    <string name="titulo_lista_notas">Notas</string>
+    <string name="titulo_formulario_altera_nota">Altera nota</string>
+    <string name="titulo_formulario_insere_nota">Insere nota</string>
 </resources>

@@ -26,6 +26,7 @@ public class FormularioNotaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_nota);
+        setTitle(R.string.titulo_formulario_insere_nota);
         comunicaComponentes();
         recebeDados();
     }
@@ -33,6 +34,7 @@ public class FormularioNotaActivity extends AppCompatActivity {
     private void recebeDados() {
         Intent recebeDados = getIntent();
         if (recebeDados.hasExtra(CHAVE_NOTA)) {
+            setTitle(R.string.titulo_formulario_altera_nota);
             Nota nota = (Nota) recebeDados.getSerializableExtra(CHAVE_NOTA);
             posicao = recebeDados.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
             preencheCampos(nota);

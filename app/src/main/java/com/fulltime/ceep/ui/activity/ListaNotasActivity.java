@@ -20,6 +20,7 @@ import com.fulltime.ceep.ui.helper.callback.ItemNotaTouchCallback;
 import com.fulltime.ceep.ui.recycler.adapter.ListaNotaAdapter;
 import com.fulltime.ceep.ui.recycler.adapter.listener.OnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,7 +38,8 @@ public class ListaNotasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_notas);
-        configuraAdapter(pegaTodasNotas());
+        setTitle(R.string.titulo_lista_notas);
+        configuraAdapter(new ArrayList<Nota>());
         configuraRecyclerView();
         configuraInsereNotas();
     }
@@ -68,7 +70,7 @@ public class ListaNotasActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (data != null) {
+        if (naoEhNulo(data)) {
             if (ehResultadoInsereNota(requestCode, data)) {
                 if (ehResultadoOk(resultCode)) {
                     salvaNota(data);
@@ -80,6 +82,10 @@ public class ListaNotasActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private boolean naoEhNulo(@Nullable Intent data) {
+        return data != null;
     }
 
     private boolean ehResultadoAlteraNota(int requestCode, @NonNull Intent data) {
